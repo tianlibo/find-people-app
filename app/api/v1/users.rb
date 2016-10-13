@@ -19,7 +19,13 @@ module V1
         else
           { code: 1, info: @user.errors.messages}
         end
-      end  
+      end 
+
+      desc 'get all users'
+      get :all do 
+        @users = User.all
+        {data:@users.to_json}
+      end 
     end
   end
 end
