@@ -18,7 +18,7 @@ ActiveAdmin.register Position do
     column :user_id
     column :latitude
     column :longitude
-    column :precision
+    column :accuracy
     column :created_at
     actions
   end

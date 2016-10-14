@@ -33,9 +33,9 @@ ActiveRecord::Schema.define(version: 20161014031405) do
 
   create_table "positions", force: :cascade do |t|
     t.integer  "user_id"
-    t.decimal  "latitude",   precision: 9, scale: 6
-    t.decimal  "longitude",  precision: 9, scale: 6
-    t.decimal  "precision",  precision: 9, scale: 6
+    t.decimal  "latitude",   precision: 11, scale: 8
+    t.decimal  "longitude",  precision: 11, scale: 8
+    t.decimal  "accuracy",   precision: 9,  scale: 3
     t.datetime "created_at"
     t.datetime "updated_at"
   end

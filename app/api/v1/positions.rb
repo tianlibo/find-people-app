@@ -13,12 +13,12 @@ module V1
           requires :user_id, type: Integer
           requires :latitude
           requires :longitude
-          requires :precision
+          requires :accuracy
         end
       end
 
       post :create do 
-        @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],precision:params[:position][:precision]
+        @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],accuracy: params[:position][:accuracy]
         if @position.save
           { code: 0, info: ""}
           logger.debug @position.latitude
