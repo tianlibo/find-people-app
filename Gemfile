@@ -33,6 +33,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+#Slim template
+gem 'slim', '~>2.0.2'
+
 #admin
 gem 'activeadmin', github: 'activeadmin'
 
