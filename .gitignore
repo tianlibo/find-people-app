@@ -27,3 +27,11 @@ config/secrets.yml
 config/config.yml
 
 tmp/*
+
+test/fixtures/positions.yml
+
+test/fixtures/users.yml
+
+test/models/position_test.rb
+
+test/models/user_test.rb
