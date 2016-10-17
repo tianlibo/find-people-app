@@ -21,7 +21,6 @@ module V1
         @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],accuracy: params[:position][:accuracy]
         if @position.save
           { code: 0, info: ""}
-          logger.debug @position.latitude
         else
           { code: 1, info: @user.errors.messages}
         end
@@ -33,7 +32,7 @@ module V1
       get :allPeoplePositions do 
         #获取当前所有人最新的位置信息
         @positions = Position.all_people_newest_positions()
-        {data: @positions.to_json}
+        {positions: @positions.as_json}
       end
 
     end

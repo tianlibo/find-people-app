@@ -8,4 +8,13 @@ Rails.application.routes.draw do
   
   mount V1::Users => '/api'
   mount V1::Positions => '/api'
+
+  get 'admin/map', to: 'admin#map'
+
+  #admin
+  namespace :admin do 
+
+    resources :maps,only: [:index]
+
+  end
 end

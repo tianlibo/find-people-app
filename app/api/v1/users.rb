@@ -24,7 +24,7 @@ module V1
       desc 'get all users'
       get :all do 
         @users = User.all
-        {data:@users.to_json}
+        {users:@users.as_json}
       end 
     end
   end
