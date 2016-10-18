@@ -22,7 +22,7 @@ module V1
       end 
 
       desc 'get all users'
-      get :all do 
+      get :index do 
         @users = User.all
         {users:@users.as_json}
       end 
