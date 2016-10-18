@@ -32,7 +32,17 @@ module V1
       get :allPeoplePositions do 
         #获取当前所有人最新的位置信息
         @positions = Position.all_people_newest_positions()
-        {positions: @positions.as_json}
+        {positions: @positions.collect{|position|
+            { 
+              id: position.id,
+              user_id: position.user_id,
+              latitude: position.latitude.to_f,
+              longitude: position.longitude.to_f,
+              accuracy: position.accuracy.to_f,
+              created_at: position.created_at
+            }
+          }
+        }
       end
 
     end
