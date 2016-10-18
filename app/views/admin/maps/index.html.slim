@@ -13,3 +13,21 @@ javascript:
     center: [116.397428, 39.90923]   
   });
 
+  var mk = new AMap.Marker({
+    map: map
+  });
+
+  var positions = #{@positions}
+  console.log(positions.length)
+
+  for(var j = 0; j < positions.length; j += 1) {
+    var lnglat = new AMap.LngLat(positions[j][0],positions[j][1])
+    var marker = new AMap.Marker({
+        position: lnglat,
+        drappable: true,
+        opacity: 1,
+        icon: 'http://webapi.amap.com/theme/v1.2/0.png'
+    });
+    marker.setMap(map);
+  }
+
