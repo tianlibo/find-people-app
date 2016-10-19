@@ -13,21 +13,31 @@ javascript:
     center: [116.397428, 39.90923]   
   });
 
-  var mk = new AMap.Marker({
-    map: map
+  var circle = new AMap.Circle({
+    center: new AMap.LngLat("116.403322", "39.920255"),// 圆心位置
+    radius: 1000, //半径
+    strokeColor: "#F33", //线颜色
+    strokeOpacity: 1, //线透明度
+    strokeWeight: 3, //线粗细度
+    fillColor: "#ee2200", //填充颜色
+    fillOpacity: 0.35//填充透明度
   });
+  circle.setMap(map);
 
   var positions = #{@positions}
-  console.log(positions.length)
+  console.log(positions)
 
   for(var j = 0; j < positions.length; j += 1) {
     var lnglat = new AMap.LngLat(positions[j][0],positions[j][1])
-    var marker = new AMap.Marker({
-        position: lnglat,
-        drappable: true,
-        opacity: 1,
-        icon: 'http://webapi.amap.com/theme/v1.2/0.png'
+    var circle = new AMap.Circle({
+        center: lnglat,
+        radius: 10000,
+        strokeColor: "#F33",
+        strokeOpacity: 1,
+        strokeWeight: 3,
+        fillColor: "#003300",
+        fillOpacity: 0.35
     });
-    marker.setMap(map);
+    circle.setMap(map);
   }
 
