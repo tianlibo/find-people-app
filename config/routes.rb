@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   
   mount V1::Users => '/api'
   mount V1::Positions => '/api'
+  mount V1::Crumbs => '/api'
 
   get 'admin/map', to: 'admin#map'
 
