@@ -4,7 +4,7 @@ class Crumb < ActiveRecord::Base
   #随机创建100个records
   def self.random_create_records(lng,lat)
     for i in 0..99
-      Crumb.create(longitude:(lng+Random.rand(0.0599)),latitude:(lat+Random.rand(0.0599)),accuracy:Random.rand(100))
+      Crumb.create(longitude:(lng+Random.rand(0.000599)),latitude:(lat+Random.rand(0.000599)),accuracy:Random.rand(100))
     end 
   end
 
@@ -13,7 +13,7 @@ class Crumb < ActiveRecord::Base
   end
 
   def self.find_to_eat(lng,lat)
-    @crumbs = Crumb.find_by_sql("SELECT * FROM crumbs WHERE earth_distance(ll_to_earth("+lat.to_s+","+lng.to_s+"), ll_to_earth(crumbs.latitude, crumbs.longitude)) < 1")
+    @crumbs = Crumb.find_by_sql("SELECT * FROM crumbs WHERE earth_distance(ll_to_earth("+lat.to_s+","+lng.to_s+"), ll_to_earth(crumbs.latitude, crumbs.longitude)) < 5")
     @crumbs.each do |c|
       c.update ate: true
     end
