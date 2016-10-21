@@ -13,7 +13,7 @@ class Crumb < ActiveRecord::Base
   end
 
   def self.find_to_eat(lng,lat)
-    @crumbs = Crumb.find_by_sql("SELECT * FROM crumbs WHERE earth_distance(ll_to_earth("+lat.to_s+","+lng.to_s+"), ll_to_earth(crumbs.latitude, crumbs.longitude)) < 5")
+    @crumbs = Crumb.find_by_sql("SELECT * FROM crumbs WHERE ate = false AND earth_distance(ll_to_earth("+lat.to_s+","+lng.to_s+"), ll_to_earth(crumbs.latitude, crumbs.longitude)) < 5")
     @crumbs.each do |c|
       c.update ate: true
     end
