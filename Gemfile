@@ -37,7 +37,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'slim', '~>2.0.2'
 
 #admin
-gem 'activeadmin'
+gem 'activeadmin', github: 'activeadmin'
 
 #API
 gem 'grape', '~> 0.17.0'
