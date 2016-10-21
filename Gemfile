@@ -37,10 +37,10 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'slim', '~>2.0.2'
 
 #admin
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin'
 
 #API
-gem 'grape'
+gem 'grape', '~> 0.17.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
