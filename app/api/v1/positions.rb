@@ -21,7 +21,7 @@ module V1
         @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],accuracy: params[:position][:accuracy]
         if @position.save
           @user = User.find(params[:position][:user_id])
-          Crumb.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
+          @crumbs = Crumb.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
           User.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
           {code: 0, info: "", crumbs: @crumbs.map{|c|c.id}.as_json, crumbs_count: @user.crumbs_count}
         else
