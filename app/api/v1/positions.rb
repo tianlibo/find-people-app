@@ -20,9 +20,9 @@ module V1
       post :create do 
         @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],accuracy: params[:position][:accuracy]
         if @position.save
-          @crumbs = Crumb.find_to_eat(@position.longitude.to_f,@position.latitude.to_f)
-          @user = User.find(params[:position][:user_id]) 
-          @user.update crumbs_count: @user.crumbs_count + @crumbs.size
+          @user = User.find(params[:position][:user_id])
+          @crumbs = Crumb.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
+          User.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
           {code: 0, info: "", crumbs: @crumbs.map{|c|c.id}.as_json, crumbs_count: @user.crumbs_count}
         else
           {code: 1, info: @user.errors.messages}
