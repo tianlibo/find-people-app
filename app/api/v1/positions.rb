@@ -21,7 +21,7 @@ module V1
         @position = Position.new user_id:params[:position][:user_id],latitude:params[:position][:latitude],longitude: params[:position][:longitude],accuracy: params[:position][:accuracy]
         if @position.save
           @users = []
-          @info = ""
+          @ate = false
           @user = User.find(params[:position][:user_id])
 
           if @user.crumbs_count > 1 
@@ -29,13 +29,13 @@ module V1
           end
           
           if @user.crumbs_count == 0
-            @info = "你被吃掉了"
+            @ate = true
             @user.update crumbs_count: 1
           end
 
           @crumbs = Crumb.find_to_eat(@position.longitude.to_f,@position.latitude.to_f,@user)
 
-          {code: 0, info: @info, crumbs: @crumbs.map{|c|c.id}.as_json, crumbs_count: @user.crumbs_count, eat_people: @users.map{|u|u.name}.as_json}
+          {code: 0, info: "", crumbs: @crumbs.map{|c|c.id}.as_json, crumbs_count: @user.crumbs_count, ate: @ate, players: @users.map{|u|u.name}.as_json}
         else
           {code: 1, info: @user.errors.messages}
         end
