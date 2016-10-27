@@ -12,7 +12,7 @@ ActiveAdmin.register User do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-  permit_params :name, :email, :phone
+  permit_params :name, :email, :phone, :crumbs_count
   
   index do 
     column :id 
@@ -21,5 +21,15 @@ ActiveAdmin.register User do
     column :email
     column :phone
     actions
+  end
+
+  form do |f|
+    f.inputs "users" do
+      f.input :name
+      f.input :email
+      f.input :phone
+      f.input :crumbs_count
+    end
+    f.actions
   end
 end
