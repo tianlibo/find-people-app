@@ -43,11 +43,12 @@ module V1
 
       get :index do 
       #获取当前所有人最新的位置信息
-      @positions = Position.all_people_newest_positions()
+      @positions = Position.includes(:users).all_people_newest_positions()
       {positions: @positions.collect{|position|
           { 
             id: position.id,
             user_id: position.user_id,
+            crumbs_count: position.user.crumbs_count,
             latitude: position.latitude.to_f,
             longitude: position.longitude.to_f,
             accuracy: position.accuracy.to_f,
