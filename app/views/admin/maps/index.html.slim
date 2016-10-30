@@ -19,7 +19,7 @@ javascript:
     var circle = new AMap.Circle({
         center: crumbs[j],
         map: map,
-        radius: 1,
+        radius: 3,
         strokeColor: "#00FF33",
         strokeOpacity: 1,
         strokeWeight: 3,
@@ -40,7 +40,8 @@ javascript:
         strokeOpacity: 1,
         strokeWeight: 3,
         fillColor: "#3498DB",
-        fillOpacity: 1
+        fillOpacity: 1,
+        draggable: true
     });    
     circle.content = "姓名:"+positions[j][1][0]+"等级:"+positions[j][1][1]
     circle.on('click', circleClick);
@@ -52,3 +53,53 @@ javascript:
     infoWindow.open(map, e.target.getCenter());
   }
 
+  var contextMenu = new AMap.ContextMenu(); 
+  contextMenu.addItem("添加新点", function(e) {
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:3000/api/v1/crumbs/create",
+      data:{"crumb":{"latitude":contextMenuPositon.J,"longitude":contextMenuPositon.D}},
+      dataType:'jsonp',
+      success: function(){},  
+      error: function(xhr, textStatus, ex){
+        if(xhr.status==201)
+        {
+          var circle = new AMap.Circle({
+            map: map,
+            center: contextMenuPositon, 
+            radius: 3,
+            strokeColor: "#00FF33",
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            fillColor: "#00FF33",
+            fillOpacity: 1
+          });
+        }else{
+          alert("异常"); 
+        }
+      }
+    })
+
+    var circle = new AMap.Circle({
+        map: map,
+        center: contextMenuPositon, 
+        radius: 3,
+        strokeColor: "#00FF33",
+        strokeOpacity: 1,
+        strokeWeight: 3,
+        fillColor: "#00FF33",
+        fillOpacity: 1
+    });
+  }, 3);
+
+
+  map.on('rightclick', function(e) {
+    contextMenu.open(map, e.lnglat);
+    contextMenuPositon = e.lnglat;
+  });
+  
+  function myrefresh()
+  {
+    window.location.reload();
+  }
+  //setTimeout('myrefresh()',30*1000);
