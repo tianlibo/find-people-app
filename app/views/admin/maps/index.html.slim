@@ -9,8 +9,8 @@ div#container
 javascript:
   var map = new AMap.Map('container', {
     resizeEnable: true,
-    zoom:11,
-    center: [116.30164849, 39.97455465]   
+    zoom:300,
+    center: #{@center}   
   });
 
   var crumbs = #{@crumbs}
@@ -19,7 +19,7 @@ javascript:
     var circle = new AMap.Circle({
         center: crumbs[j],
         map: map,
-        radius: 10,
+        radius: 1,
         strokeColor: "#00FF33",
         strokeOpacity: 1,
         strokeWeight: 3,
@@ -35,7 +35,7 @@ javascript:
     var circle = new AMap.Circle({
         center: positions[j][0],
         map: map,
-        radius: 15,
+        radius: 3,
         strokeColor: "#3498DB",
         strokeOpacity: 1,
         strokeWeight: 3,
