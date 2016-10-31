@@ -1,9 +1,18 @@
-= stylesheet_link_tag  "http://cache.amap.com/lbs/static/main1119.css"
-= javascript_include_tag "http://cache.amap.com/lbs/static/es5.min.js"
-= javascript_include_tag "http://webapi.amap.com/maps?v=1.3&key=f2c1178ddca72e990d5f17edcad40f8b"
-= javascript_include_tag "http://cache.amap.com/lbs/static/addToolbar.js"
-
 div#container
+div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby ="myModalLabel" aria-hidden="true"
+    div class="modal-dialog"
+      div class="modal-content"
+        div class="modal-header"
+          h4 class="modal-title" id="myModalLabel"
+            = "模态框（Modal）标题"
+          div class="modal-body"
+            = "在这里添加一些文本"
+          div class="modal-footer"
+            button type="button" class="btn btn-default" data-dismiss="modal"
+              = "关闭"
+            button type="button" class="btn btn-primary"
+              = "提交更改"
+
 
 
 javascript:
@@ -41,7 +50,6 @@ javascript:
         strokeWeight: 3,
         fillColor: "#3498DB",
         fillOpacity: 1,
-        draggable: true
     });    
     circle.content = "姓名:"+positions[j][1][0]+"等级:"+positions[j][1][1]
     circle.on('click', circleClick);
@@ -54,7 +62,7 @@ javascript:
   }
 
   var contextMenu = new AMap.ContextMenu(); 
-  contextMenu.addItem("添加新点", function(e) {
+  contextMenu.addItem("添加面包屑", function(e) {
     $.ajax({
       type: 'POST',
       url: "http://localhost:3000/api/v1/crumbs/create",
@@ -92,14 +100,103 @@ javascript:
     });
   }, 3);
 
-
   map.on('rightclick', function(e) {
     contextMenu.open(map, e.lnglat);
     contextMenuPositon = e.lnglat;
   });
+
+  var title = '移动用户位置';
+  var lat = 0;
+  var lng = 0;
+  content = [];
+  content.push('用户ID: <input type="number" id="user_id"> <input type="submit" id="createPosition" value="提交"  onclick="createPostion()">');
+
+  var infoWindow = new AMap.InfoWindow({
+      isCustom: true,  //使用自定义窗体
+      content: createInfoWindow(title, content.join("<br/>")),
+      offset: new AMap.Pixel(16, -45)
+  });
+
+  function createInfoWindow(title, content){
+    var info = document.createElement("div");
+    info.className = "info";
+
+    //可以通过下面的方式修改自定义窗体的宽高
+    //info.style.width = "400px";
+    // 定义顶部标题
+    var top = document.createElement("div");
+    var titleD = document.createElement("div");
+    var closeX = document.createElement("img");
+    top.className = "info-top";
+    titleD.innerHTML = title;
+    closeX.src = "http://webapi.amap.com/images/close2.gif";
+    closeX.onclick = closeInfoWindow;
+
+    top.appendChild(titleD);
+    top.appendChild(closeX);
+    info.appendChild(top);
+
+    // 定义中部内容
+    var middle = document.createElement("div");
+    middle.className = "info-middle";
+    middle.style.backgroundColor = 'white';
+    middle.innerHTML = content;
+    info.appendChild(middle);
+
+    // 定义底部内容
+    var bottom = document.createElement("div");
+    bottom.className = "info-bottom";
+    bottom.style.position = 'relative';
+    bottom.style.top = '0px';
+    bottom.style.margin = '0 auto';
+    var sharp = document.createElement("img");
+    sharp.src = "http://webapi.amap.com/images/sharp.png";
+    bottom.appendChild(sharp);
+    info.appendChild(bottom);
+    return info;
+  } 
+
+  contextMenu.addItem("移动用户位置", function(e) {
+    infoWindow.open(map, contextMenuPositon);
+    lat = contextMenuPositon.J
+    lng = contextMenuPositon.D
+  }, 3);
+
+  function createPostion(){
+    id = $("#user_id").val()
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:3000/api/v1/positions/create",
+      data:{"position":{"user_id":id,"latitude":lat,"longitude":lng,"accuracy":0}},
+      dataType:'jsonp',
+      success: function(){},  
+      error: function(xhr, textStatus, ex){
+        if(xhr.status==201)
+        {
+          var circle = new AMap.Circle({
+            map: map,
+            center: contextMenuPositon, 
+            radius: 3,
+            strokeColor: "#3498DB",
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            fillColor: "#3498DB",
+            fillOpacity: 1
+          });
+          closeInfoWindow()
+        }else{
+          alert("异常"); 
+        }
+      }
+    })
+  }
+
+  function closeInfoWindow() {
+    map.clearInfoWindow();
+  }
   
   function myrefresh()
   {
     window.location.reload();
   }
-  //setTimeout('myrefresh()',30*1000);
+  setTimeout('myrefresh()',30*1000);
