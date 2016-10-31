@@ -167,7 +167,7 @@ javascript:
     $.ajax({
       type: 'POST',
       url: "http://localhost:3000/api/v1/positions/create",
-      data:{"position":{"user_id":id,"latitude":lat,"longitude":lng,"accuracy":0}},
+      data:{"position":{"user_id":id,"latitude":lat,"longitude":lng,"accuracy":25}},
       dataType:'jsonp',
       success: function(){},  
       error: function(xhr, textStatus, ex){
