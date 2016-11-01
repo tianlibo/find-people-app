@@ -41,8 +41,12 @@ gem 'slim', '~>2.0.2'
 #admin
 gem 'activeadmin', github: 'activeadmin'
 
-#API
+#api
 gem 'grape', '~> 0.17.0'
+
+#redis
+gem "redis", '~>3.3.1' 
+gem "hiredis", '~>0.6.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

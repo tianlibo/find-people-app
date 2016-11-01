@@ -37,6 +37,18 @@ namespace :grape do
         desc: route.description
       }
       puts r.map{|k,v| "#{k}:#{v}"}.join('  ')
-    end    
+    end  
+    V1::Players.routes.each do |route|
+      path = route.path
+      path.sub!("(.:format)",".json")
+      path.sub!("/:version","")
+      r = {
+        method: route.request_method,
+        path: path,
+        params: route.params,
+        desc: route.description
+      }
+      puts r.map{|k,v| "#{k}:#{v}"}.join('  ')
+    end   
   end
 end
