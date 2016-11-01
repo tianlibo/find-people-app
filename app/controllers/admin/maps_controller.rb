@@ -11,6 +11,6 @@ class Admin::MapsController < Admin::ApplicationController
       @players = [[[p.longitude.to_f,p.latitude.to_f],[p.user.name.to_s,p.user.crumbs_count,p.created_at.to_s]]]
       @crumbs = []
     end
-    @center = @players.size ? @players[0][0] : [116.43416079,39.96593914]
+    @center = @players.size > 0 ? @players[0][0] : [116.43416079,39.96593914]
   end
 end
