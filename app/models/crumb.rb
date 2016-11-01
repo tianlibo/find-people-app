@@ -19,6 +19,11 @@ class Crumb < ActiveRecord::Base
 
     def redis_all
       redis.smembers("crumbs")
+      @crumbs = []
+      keys.each do |key|
+        @crumbs << redis.hgetall(key)
+      end
+      return @crumbs
     end
 
     def redis_find(id)

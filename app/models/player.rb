@@ -18,7 +18,12 @@ class Player < ActiveRecord::Base
     end
 
     def redis_all
-      redis.smembers("players")
+      keys = redis.smembers("players")
+      @players = []
+      keys.each do |key|
+        @players << redis.hgetall(key)
+      end
+      return @players
     end
 
     def redis_find(id)
