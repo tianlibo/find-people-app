@@ -31,9 +31,19 @@ class Crumb < ActiveRecord::Base
       end
     end
 
+    private
 
+    def redis
+      $redis 
+    end
 
-    #postgres mothods
+    def redis_key(id)
+      "crumbs:#{id}"
+    end
+  end
+
+  #postgres mothods
+  class << self 
     def random_create_records(lng,lat)
       for i in 0..99
         Crumb.create(longitude:(lng+Random.rand(0.00599)),latitude:(lat+Random.rand(0.00599)),accuracy:Random.rand(100))
@@ -51,16 +61,6 @@ class Crumb < ActiveRecord::Base
       @crumbs.each do |c|
         c.update ate: true
       end
-    end
-
-    private
-
-    def redis
-      $redis 
-    end
-
-    def redis_key(id)
-      "crumbs:#{id}"
     end
   end
 end

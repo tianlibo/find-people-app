@@ -12,7 +12,7 @@ ActiveAdmin.register Player do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-  permit_params :id, :name, :user_id, :latitude, :longitude, :accuracy
+  permit_params :id, :name, :user_id, :latitude, :longitude, :accuracy ,:crumbs_count
 
   index do 
     column :id 
