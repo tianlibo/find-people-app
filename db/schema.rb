@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021072813) do
+ActiveRecord::Schema.define(version: 20161031071437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,19 @@ ActiveRecord::Schema.define(version: 20161021072813) do
     t.datetime "updated_at"
   end
 
+  create_table "players", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.decimal  "latitude",     precision: 11, scale: 8
+    t.decimal  "longitude",    precision: 11, scale: 8
+    t.decimal  "accuracy",     precision: 9,  scale: 3
+    t.integer  "crumbs_count",                          default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
+
   create_table "positions", force: :cascade do |t|
     t.integer  "user_id"
     t.decimal  "latitude",   precision: 11, scale: 8
@@ -68,7 +81,6 @@ ActiveRecord::Schema.define(version: 20161021072813) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "crumbs_count",    default: 0
   end
 
 end

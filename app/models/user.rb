@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   
   has_many :positions
+  has_many :players
 
   def self.find_to_eat(lng,lat,user)
     #sql 在添加的时间判断后，优化的效果并不是很明显
@@ -13,9 +14,6 @@ class User < ActiveRecord::Base
       if another_user.crumbs_count < user.crumbs_count 
         user.update crumbs_count: (user.crumbs_count + another_user.crumbs_count)
         another_user.update crumbs_count: 0
-        logger.debug another_user.positions.last.to_json
-        logger.debug lat
-        logger.debug lng
       end
     end
   end
