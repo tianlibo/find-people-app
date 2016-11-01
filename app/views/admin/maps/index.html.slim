@@ -38,11 +38,11 @@ javascript:
   }
 
   var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
-  var positions = #{@positions.to_json.html_safe}
+  var players = #{@players.to_json.html_safe}
 
-  for(var j = 0; j < positions.length; j += 1) {
+  for(var j = 0; j < players.length; j += 1) {
     var circle = new AMap.Circle({
-        center: positions[j][0],
+        center: players[j][0],
         map: map,
         radius: 3,
         strokeColor: "#3498DB",
@@ -51,7 +51,7 @@ javascript:
         fillColor: "#3498DB",
         fillOpacity: 1,
     });    
-    circle.content = "姓名:"+positions[j][1][0]+"等级:"+positions[j][1][1]
+    circle.content = "姓名:"+players[j][1][0]+"等级:"+players[j][1][1]
     circle.on('click', circleClick);
     circle.emit('click', {target: circle});
   }
@@ -65,7 +65,7 @@ javascript:
   contextMenu.addItem("添加面包屑", function(e) {
     $.ajax({
       type: 'POST',
-      url: "http://localhost:3000/api/v1/crumbs/create",
+      url: "http://uppers.me/api/v1/crumbs/create",
       data:{"crumb":{"latitude":contextMenuPositon.J,"longitude":contextMenuPositon.D}},
       dataType:'jsonp',
       success: function(){},  
@@ -109,7 +109,7 @@ javascript:
   var lat = 0;
   var lng = 0;
   content = [];
-  content.push('用户ID: <input type="number" id="user_id"> <input type="submit" id="createPosition" value="提交"  onclick="createPostion()">');
+  content.push('PlayerID: <input type="number" id="id"> <input type="submit" id="updatePlayer" value="提交"  onclick="updatePlayer()">');
 
   var infoWindow = new AMap.InfoWindow({
       isCustom: true,  //使用自定义窗体
@@ -162,16 +162,16 @@ javascript:
     lng = contextMenuPositon.D
   }, 3);
 
-  function createPostion(){
-    id = $("#user_id").val()
+  function updatePlayer(){
+    id = $("#id").val()
     $.ajax({
-      type: 'POST',
-      url: "http://localhost:3000/api/v1/positions/create",
-      data:{"position":{"user_id":id,"latitude":lat,"longitude":lng,"accuracy":25}},
+      type: 'PUT',
+      url: "http://uppers.me/api/v1/players/"+id+"",
+      data:{"player":{"latitude":lat,"longitude":lng,"accuracy":25}},
       dataType:'jsonp',
       success: function(){},  
       error: function(xhr, textStatus, ex){
-        if(xhr.status==201)
+        if(xhr.status==200)
         {
           var circle = new AMap.Circle({
             map: map,
@@ -199,4 +199,4 @@ javascript:
   {
     window.location.reload();
   }
-  setTimeout('myrefresh()',30*1000);
+  setTimeout('myrefresh()',60*1000);

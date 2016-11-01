@@ -38,7 +38,7 @@ class Player < ActiveRecord::Base
 
   #postgres mothods
   class << self 
-    def all_Players_info
+    def all_players_info
       Player.all.map{|p|[[p.longitude.to_f,p.latitude.to_f],[p.name.to_s,p.crumbs_count,p.created_at.to_s]]}
 
     end
