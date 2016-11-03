@@ -15,6 +15,7 @@ class Crumb < ActiveRecord::Base
     def redis_destroy(id)
       redis.del(redis_key(id))
       redis.srem("crumbs",redis_key(id))
+      redis.sadd("crumbs:destroy",redis_key(id))
     end
 
     def redis_all

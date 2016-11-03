@@ -42,8 +42,6 @@ module V2
       put ':id' do 
         if Player.redis_update params[:id], latitude:params[:player][:latitude],longitude:params[:player][:longitude],accuracy:params[:player][:accuracy]
           #update 后更新玩家位置坐标
-
-
           {code: 0, info: ""}
         else
           {code: 1, info: @user.errors.messages}
@@ -78,7 +76,7 @@ module V2
         requires :accuracy
       end
 
-      Post :eat do 
+      post :eat do 
         #计算两点之间的距离，完成吃或不吃
         #更新位置
         #返回结果
