@@ -1,9 +1,16 @@
 class Map
   class << self
-    def redis_map_update(new_lng,new_lat,key)
-      @object = redis.hgetall(key)
-      old_lng = regex.match(@object["longitude"]).to_s
-      old_lat = regex.match(@object["latitude"]).to_s
+    def redis_map_create(lng,lat,key)
+
+      lng = regex.match(lng).to_s
+      lat = regex.match(lat).to_s
+
+      redis.sadd(redis_key(lng,lat),key)
+    end
+
+    def redis_map_update(new_lng,new_lat,old_player)
+      old_lng = regex.match(@old_player["longitude"]).to_s
+      old_lat = regex.match(@old_player["latitude"]).to_s
       lng = regex.match(new_lng).to_s
       lat = regex.match(new_lat).to_s
 
@@ -41,12 +48,13 @@ class Map
           end
         end
       end
-
+      #此处有问题
       return @players,@crumbs
     end
 
     #需要测试，float精度会损耗
-    def redis_map_distance(loc1,loc2)
+    #loc[lat,lng] 和数据库中计算误差在近距离的情况下，低于米级，还可接受
+    def distance(loc1,loc2)
       rad_per_deg = Math::PI/180  # PI / 180
       rkm = 6371                  # Earth radius in kilometers
       rm = rkm * 1000             # Radius in meters

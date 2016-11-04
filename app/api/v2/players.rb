@@ -40,8 +40,10 @@ module V2
       end
 
       put ':id' do 
+        old_player = Player.redis_find(params[:id])
         if Player.redis_update params[:id], latitude:params[:player][:latitude],longitude:params[:player][:longitude],accuracy:params[:player][:accuracy]
-          #update 后更新玩家位置坐标
+          #更新地图
+          Map.redis_map_update(new_lng,new_lat,old_player)
           {code: 0, info: ""}
         else
           {code: 1, info: @user.errors.messages}
@@ -69,17 +71,20 @@ module V2
       end
 
       params do 
-        requires :eat_type, type:String
-        requires :eat_id, type:Integer
+        requires :players, type:Array
+        requires :crumbs, type:Array
         requires :latitude
         requires :longitude
         requires :accuracy
       end
 
-      post :eat do 
-        #计算两点之间的距离，完成吃或不吃
-        #更新位置
-        #返回结果
+      #这个接口和put接口的分工有什么区别吗？
+      post ':id/eat' do 
+        Player.redis_update(params[:id],{longitude:params[:longitude],latitude:params[:latitude]})
+        @player = Player.redis_find(params[:id])
+        @objects = Player.eat(@player,params[:players],params[:crumbs])
+        @player = Player.redis_find(params[:id])
+        {code: 0, info: "", crumbs: @objects[:crumbs], crumbs_count: @player["crumbs_count"], players: @objects[:players]}
       end
 
       get '/' do 

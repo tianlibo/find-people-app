@@ -37,14 +37,14 @@ class Crumb < ActiveRecord::Base
       end
     end
 
+    def redis_key(id)
+      "crumbs:#{id}"
+    end
+
     private
 
     def redis
       $redis 
-    end
-
-    def redis_key(id)
-      "crumbs:#{id}"
     end
   end
 
