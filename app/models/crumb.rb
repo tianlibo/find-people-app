@@ -15,30 +15,39 @@ class Crumb < ActiveRecord::Base
     def redis_destroy(id)
       redis.del(redis_key(id))
       redis.srem("crumbs",redis_key(id))
+      redis.sadd("crumbs:destroy",redis_key(id))
     end
 
     def redis_all
       redis.smembers("crumbs")
+      @crumbs = []
+      keys.each do |key|
+        @crumbs << redis.hgetall(key)
+      end
+      return @crumbs
     end
 
     def redis_find(id)
       redis.hgetall(redis_key(id))
     end
     
+    # 此处有问题，没有更新map, 考虑是否把创建的工作放到rake中
     def redis_random_create_records(lng,lat)
       for i in 0..9
-        Crumb.redis_create(longitude:(lng+Random.rand(0.00599)),latitude:(lat+Random.rand(0.00599)),accuracy:Random.rand(100))
+        @crumb = Crumb.create(longitude:(lng.to_f + Random.rand(0.00599)),latitude:(lat.to_f + Random.rand(0.00599)),accuracy:Random.rand(100).to_s)
+        Crumb.redis_create(@crumb.id,{longitude:@crumb.longitude,latitude:@crumb.latitude,accuracy:@crumb.accuracy})
+        Map.redis_map_create(@crumb.longitude.to_s,@crumb.latitude.to_s,Crumb.redis_key(@crumb.id))
       end
+    end
+
+    def redis_key(id)
+      "crumb:#{id}"
     end
 
     private
 
     def redis
       $redis 
-    end
-
-    def redis_key(id)
-      "crumbs:#{id}"
     end
   end
 

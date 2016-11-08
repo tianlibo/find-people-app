@@ -48,6 +48,10 @@ gem 'grape', '~> 0.17.0'
 gem "redis", '~>3.3.1' 
 gem "hiredis", '~>0.6.1'
 
+#background jobs 
+gem 'sidekiq'
+gem 'whenever', :require => false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

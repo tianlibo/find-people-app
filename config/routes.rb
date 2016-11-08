@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   mount V2::Users => '/api'
   mount V2::Crumbs => '/api'
   mount V2::Players => '/api'
+  mount V2::Maps => '/api'
 
 
   resources :maps, only: [:index]

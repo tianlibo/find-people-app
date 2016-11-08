@@ -1,8 +1,9 @@
 module V2
   class Users < Grape::API
-    version 'v1', using: :path
+    version 'v2', using: :path
     format :json
 
+    helpers V2::Helpers
 
     resource :users do 
 
@@ -22,7 +23,7 @@ module V2
       end 
 
       desc 'get all users'
-      get :index do 
+      get '/' do 
         @users = User.all
         {users:@users.as_json}
       end 
