@@ -12,21 +12,6 @@ module V2
         @crumbs = Crumb.redis_all.as_json()
       end
 
-      # get :index do 
-      #   @crumbs = Crumb.unate
-      #   {
-      #     crumbs: @crumbs.collect{|c|
-      #       { 
-      #         id: c.id,
-      #         latitude: c.latitude.to_f,
-      #         longitude: c.longitude.to_f,
-      #         accuracy: c.accuracy.to_f,
-      #         created_at: c.created_at
-      #       } 
-      #     }
-      #   }
-      # end
-
       params do 
         requires :crumb, type: Hash do
           requires :latitude
@@ -36,7 +21,7 @@ module V2
 
       desc 'create a new crumbs'
       post :create do 
-        @crumb = Crumb.new latitude:params[:crumb][:latitude], longitude:params[:crumb][:longitude]
+        @crumb = Crumb.new params[:crumb].as_json
         if @crumb.save
           Crumb.redis_create(@crumb.id,@crumb.as_json(only:[:id,:latitude,:longitude]))
           {code: 0, info: ""}

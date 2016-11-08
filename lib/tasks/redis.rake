@@ -14,3 +14,15 @@ namespace :redis do
     puts "END.."
   end
 end
+
+# rake redis:create:crumbs[11.1,123.2]
+namespace :redis do 
+  desc "TODO create data"
+  namespace :create do 
+    task :crumbs,[:lng, :lat] => :environment  do |t, args|
+      Crumb.redis_random_create_records(args[:lng],args[:lat])
+    end
+    
+    puts "END.."
+  end
+end

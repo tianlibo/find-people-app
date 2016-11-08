@@ -16,7 +16,7 @@ module V2
       end
       get :near do 
         @objects = Map.redis_map_info(params[:longitude,:latitude])
-        {players:@objects[0].as_json,crumbs:@objects[1].as_json}
+        {players:@objects[:players].as_json,crumbs:@objects[:crumbs].as_json}
       end 
     end
   end

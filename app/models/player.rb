@@ -32,7 +32,7 @@ class Player < ActiveRecord::Base
 
 
     def redis_key(id)
-      "players:#{id}"
+      "player:#{id}"
     end
 
 
@@ -47,14 +47,17 @@ class Player < ActiveRecord::Base
           players_ate << id
         end
       end
-
+      
+      # map没有做更新操作，map的更新操作还要考虑原子操作的问题
       crumbs_ate = []
       crumb_ids.each do |id|
         c = Crumb.redis_find(id)
         distance = Map.distance([player["latitude"].to_f,player["longitude"].to_f],[c["latitude"].to_f,c["longitude"].to_f])
         if distance < 5
+          # 此处需要分析一下 是否采用原子操作
           Player.redis_update(player["id"],{crumbs_count:(player["crumbs_count"].to_i + 1)})
           Crumb.redis_destroy(id)
+          Map.redis_map_remove(Crumb.redis_key(id))
           crumbs_ate << id
         end
       end

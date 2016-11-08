@@ -1,30 +1,32 @@
 class Map
   class << self
     def redis_map_create(lng,lat,key)
-
       lng = regex.match(lng).to_s
       lat = regex.match(lat).to_s
-
       redis.sadd(redis_key(lng,lat),key)
     end
 
     def redis_map_update(new_lng,new_lat,old_player)
-      old_lng = regex.match(@old_player["longitude"]).to_s
-      old_lat = regex.match(@old_player["latitude"]).to_s
+      old_lng = regex.match(old_player["longitude"]).to_s
+      old_lat = regex.match(old_player["latitude"]).to_s
       lng = regex.match(new_lng).to_s
       lat = regex.match(new_lat).to_s
 
       if old_lng == lng && old_lat == lat
         return
       else
-        redis.sadd(redis_key(lng,lat),key)
-        redis.srem(redis_key(old_lng,old_lat),key)
+        redis.sadd(redis_key(lng,lat),Player.redis_key(old_player["id"]))
+        redis.srem(redis_key(old_lng,old_lat),Player.redis_key(old_player["id"]))
       end
     end
 
-    #这个函数完成后需要好好测一下,用两个集合做交集运算  
+    def redis_map_remove(lng,lat,key)
+      lng = regex.match(lng).to_s
+      lat = regex.match(lat).to_s
+      redis.srem(redis_key(lng,lat),key)
+    end
+ 
     def redis_map_info(lng,lat)
-      #这个循环感觉时间复杂度有点高
       origin_lng = regex.match(lng).to_s
       origin_lat = regex.match(lat).to_s
       @crumbs = []
@@ -48,8 +50,7 @@ class Map
           end
         end
       end
-      #此处有问题
-      return @players,@crumbs
+      return {players: @players,crumbs:@crumbs}
     end
 
     #需要测试，float精度会损耗
