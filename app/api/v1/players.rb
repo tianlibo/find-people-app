@@ -62,6 +62,19 @@ module V1
         end
       end
 
+      desc 'get player by id'
+
+
+      get ':id' do 
+        @player = Player.find_by_id(params[:id])
+
+        if @player 
+          {code: 0, info: "", player: @player.as_json}
+        else 
+          {code: 1, info: "player no exist"}
+        end
+      end
+
       get '/' do 
         #获取当前所有玩家最新的位置信息
         @players = Player.all.as_json()
