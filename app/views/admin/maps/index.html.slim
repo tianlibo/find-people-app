@@ -65,7 +65,7 @@ javascript:
   contextMenu.addItem("添加面包屑", function(e) {
     $.ajax({
       type: 'POST',
-      url: "http://119.254.209.221/api/v1/crumbs/create",
+      url: "http://go.uppers.club/api/v1/crumbs/create",
       data:{"crumb":{"latitude":contextMenuPositon.J,"longitude":contextMenuPositon.D}},
       dataType:'jsonp',
       success: function(){},  
@@ -166,7 +166,7 @@ javascript:
     id = $("#id").val()
     $.ajax({
       type: 'PUT',
-      url: "http://119.254.209.221/api/v1/players/"+id+"",
+      url: "http://go.uppers.club/api/v1/players/"+id+"",
       data:{"player":{"latitude":lat,"longitude":lng,"accuracy":25}},
       dataType:'jsonp',
       success: function(){},  
