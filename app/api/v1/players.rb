@@ -30,20 +30,17 @@ module V1
 
       desc 'update player by id'
  
-      params do 
-        requires :player, type: Hash do
-          requires :latitude
-          requires :longitude
-          requires :accuracy
-        end
-      end
+      # params do 
+      #   requires :player, type: Hash do
+      #     requires :latitude
+      #     requires :longitude
+      #     requires :accuracy
+      #   end
+      # end
 
-      put ':id' do 
-        logger.debug "update"
+      put ':id' do
         @player = Player.find_by_id(params[:id])
-        logger.debug @player.id
         if @player.update  latitude:params[:player][:latitude],longitude:params[:player][:longitude],accuracy:params[:player][:accuracy]
-          logger.debug "xxx"
           @players = []
           @ate = false
 
